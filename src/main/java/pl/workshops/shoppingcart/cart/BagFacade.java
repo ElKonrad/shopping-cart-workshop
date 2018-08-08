@@ -1,5 +1,6 @@
 package pl.workshops.shoppingcart.cart;
 
+import pl.workshops.shoppingcart.product.Product;
 import pl.workshops.shoppingcart.product.ProductFacade;
 
 import java.util.List;
@@ -20,9 +21,9 @@ public class BagFacade {
 
     public Bag addItem(String bagId, Item item) {
         Bag bag = bagRepository.findById(bagId);
-        item.setProduct(productFacade.show(item.getProductId()));
-
-        if (!item.isSufficientQuantitiesInStock()) {
+        Product foundProduct = productFacade.show(item.getProductId());
+        item.setProduct(foundProduct);
+        if (item.isNotEnoughQuantitiesInStock()) {
             throw new IllegalArgumentException("Requested quantities exceeds available stock");
         }
         bag.add(item);

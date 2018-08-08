@@ -6,6 +6,9 @@ import java.util.UUID;
 
 public class Product {
 
+    private static final boolean AVAILABLE = true;
+    private static final boolean UNAVAILABLE = false;
+
     private String id;
     private String title;
     private BigDecimal unitPrice;
@@ -18,7 +21,7 @@ public class Product {
         this.title = title;
         this.unitPrice = unitPrice;
         this.quantity = quantity;
-        this.available = true;
+        this.available = AVAILABLE;
         this.createdDate = new Date();
     }
 
@@ -51,7 +54,6 @@ public class Product {
     }
 
     public void withdrawFromSale() {
-        available = false;
+        available = UNAVAILABLE;
     }
-
 }

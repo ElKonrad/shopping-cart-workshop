@@ -8,4 +8,8 @@ public enum Size {
     Size(int size) {
         this.size = size;
     }
+
+    public int getNumber() {
+        return size;
+    }
 }

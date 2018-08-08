@@ -7,24 +7,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Bag {
+class Bag {
 
     private String id;
     private List<Item> products;
 
-    public Bag(String id) {
+    Bag(String id) {
         this.id = id;
     }
 
-    public String getId() {
+    String getId() {
         return id;
     }
 
-    public List<Item> getProducts() {
+    List<Item> getProducts() {
         return products;
     }
 
-    public void add(Item item) {
+    void add(Item item) {
         Product product = item.getProduct();
         if (Objects.isNull(products)) {
             products = new ArrayList<>();
@@ -35,17 +35,18 @@ public class Bag {
         products.add(item);
     }
 
-    public BigDecimal calculateTotalCost() {
+    BigDecimal calculateTotalCost() {
         return products.stream()
                        .map(this::calculateOneItemCost)
                        .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    private BigDecimal calculateOneItemCost(Item item) {
-        return item.getProduct().getUnitPrice().multiply(new BigDecimal(item.getQuantity()));
+    void clear() {
+        products.clear();
     }
 
-    public void clear() {
-        products.clear();
+    private BigDecimal calculateOneItemCost(Item item) {
+        BigDecimal requestedQuantity = new BigDecimal(item.getQuantity());
+        return item.getProductUnitPrice().multiply(requestedQuantity);
     }
 }

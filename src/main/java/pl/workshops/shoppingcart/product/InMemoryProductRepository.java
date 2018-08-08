@@ -1,13 +1,14 @@
 package pl.workshops.shoppingcart.product;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class InMemoryProductRepository implements ProductRepository {
 
-    private ConcurrentHashMap<String, Product> map = new ConcurrentHashMap<>();
+    private Map<String, Product> map = new HashMap<>();
 
     @Override
     public Product save(Product product) {

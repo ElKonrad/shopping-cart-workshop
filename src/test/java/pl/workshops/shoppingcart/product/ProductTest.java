@@ -7,6 +7,8 @@ import pl.workshops.shoppingcart.product.shoe.Shoe;
 import pl.workshops.shoppingcart.product.shoe.Size;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
