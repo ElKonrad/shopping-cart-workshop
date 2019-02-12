@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-class Bag {
+class Cart {
 
     private String id;
     private List<Item> products;
 
-    Bag(String id) {
+    Cart(String id) {
         this.id = id;
     }
 

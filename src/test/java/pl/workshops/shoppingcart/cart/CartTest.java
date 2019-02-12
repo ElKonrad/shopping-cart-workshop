@@ -15,47 +15,47 @@ import java.util.UUID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class BagTest {
+public class CartTest {
 
-    private static final String BAG_ID = UUID.randomUUID().toString();
+    private static final String CART_ID = UUID.randomUUID().toString();
 
     ProductFacade productFacade = new Configuration().productFacade();
-    BagFacade bagFacade = new Configuration().bagFacade(productFacade);
+    CartFacade cartFacade = new Configuration().cartFacade(productFacade);
 
     @Before
     public void init() {
-        bagFacade.createBag(BAG_ID);
+        cartFacade.createCart(CART_ID);
     }
 
     @Test
-    public void shouldNotBeEmptyBagWhenSomeProductIsAdded() {
+    public void shouldNotBeEmptyCartWhenSomeProductIsAdded() {
         //given
         Product adidasShoe = new Shoe("ADIDAS GAZELLE", new BigDecimal(200), 10, Brand.ADIDAS, Size.A);
         productFacade.add(adidasShoe);
         Item item = new Item(adidasShoe.getId(), 1);
 
         //when
-        bagFacade.addItem(BAG_ID, item);
+        cartFacade.addItem(CART_ID, item);
 
         //then
-        assertTrue(bagFacade.showAllItems(BAG_ID).size() > 0);
+        assertTrue(cartFacade.showAllItems(CART_ID).size() > 0);
     }
 
     @Test
-    public void shouldIncreaseNumberOfItemsInBagWhenAnotherProductIsAdded() {
+    public void shouldIncreaseNumberOfItemsInCartWhenAnotherProductIsAdded() {
         //given
         Product adidasShoe = new Shoe("ADIDAS GAZELLE", new BigDecimal(200), 10, Brand.ADIDAS, Size.A);
         Product nikeShoe = new Shoe("NIKE FLYKNIT RACER", new BigDecimal(300), 10, Brand.NIKE, Size.B);
         productFacade.add(adidasShoe);
         productFacade.add(nikeShoe);
 
-        bagFacade.addItem(BAG_ID, new Item(adidasShoe.getId(), 1));
+        cartFacade.addItem(CART_ID, new Item(adidasShoe.getId(), 1));
 
         //when
-        bagFacade.addItem(BAG_ID, new Item(nikeShoe.getId(), 1));
+        cartFacade.addItem(CART_ID, new Item(nikeShoe.getId(), 1));
 
         //then
-        assertEquals(2, bagFacade.showAllItems(BAG_ID).size());
+        assertEquals(2, cartFacade.showAllItems(CART_ID).size());
     }
 
     @Test
@@ -67,13 +67,13 @@ public class BagTest {
         productFacade.add(nikeShoe);
 
         Item item = new Item(adidasShoe.getId(), 1);
-        bagFacade.addItem(BAG_ID, item);
+        cartFacade.addItem(CART_ID, item);
 
         //when
-        Bag bag = bagFacade.addItem(BAG_ID, new Item(nikeShoe.getId(), 1));
+        Cart cart = cartFacade.addItem(CART_ID, new Item(nikeShoe.getId(), 1));
 
         //then
-        assertEquals(new BigDecimal(500), bag.calculateTotalCost());
+        assertEquals(new BigDecimal(500), cart.calculateTotalCost());
     }
 
     @Test
@@ -85,48 +85,48 @@ public class BagTest {
         productFacade.add(nikeShoe);
 
         Item adidasShoeItem = new Item(adidasShoe.getId(), 1);
-        bagFacade.addItem(BAG_ID, adidasShoeItem);
+        cartFacade.addItem(CART_ID, adidasShoeItem);
         Item nikeShoeItem = new Item(nikeShoe.getId(), 1);
-        bagFacade.addItem(BAG_ID, nikeShoeItem);
+        cartFacade.addItem(CART_ID, nikeShoeItem);
 
         //when
-        Bag bag = bagFacade.removeItem(BAG_ID, adidasShoeItem);
+        Cart cart = cartFacade.removeItem(CART_ID, adidasShoeItem);
 
         //then
-        assertEquals(new BigDecimal(300), bag.calculateTotalCost());
+        assertEquals(new BigDecimal(300), cart.calculateTotalCost());
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void shouldThrownExceptionWhenTryingAddToBagTooManyQuantityProductThatIsNotInStock() {
+    public void shouldThrownExceptionWhenTryingAddToCartTooManyProductsNotAvailableInStock() {
         //given
         Product adidasShoe = new Shoe("ADIDAS GAZELLE", new BigDecimal(200), 10, Brand.ADIDAS, Size.A);
         productFacade.add(adidasShoe);
         Item itemWithTooManyQuantity = new Item(adidasShoe.getId(), 20);
 
         //when
-        bagFacade.addItem(BAG_ID, itemWithTooManyQuantity);
+        cartFacade.addItem(CART_ID, itemWithTooManyQuantity);
     }
 
     @Test
-    public void shouldClearBag() {
+    public void shouldClearCart() {
         //given
         Product adidasShoe = new Shoe("ADIDAS GAZELLE", new BigDecimal(200), 10, Brand.ADIDAS, Size.A);
         Product nikeShoe = new Shoe("NIKE FLYKNIT RACER", new BigDecimal(300), 10, Brand.NIKE, Size.B);
         productFacade.add(adidasShoe);
         productFacade.add(nikeShoe);
 
-        bagFacade.addItem(BAG_ID, new Item(adidasShoe.getId(), 1));
-        bagFacade.addItem(BAG_ID, new Item(nikeShoe.getId(), 1));
+        cartFacade.addItem(CART_ID, new Item(adidasShoe.getId(), 1));
+        cartFacade.addItem(CART_ID, new Item(nikeShoe.getId(), 1));
 
         //when
-        bagFacade.clearBag(BAG_ID);
+        cartFacade.clearCart(CART_ID);
 
         //then
-        assertEquals(0, bagFacade.showAllItems(BAG_ID).size());
+        assertEquals(0, cartFacade.showAllItems(CART_ID).size());
     }
 
     @Test(expected = IllegalStateException.class)
-    public void shouldThrownExceptionWhenTryingAddToBagProductWithdrawnFromSale() {
+    public void shouldThrownExceptionWhenTryingAddToCartProductWithdrawnFromSale() {
         //given
         Product adidasShoe = new Shoe("ADIDAS GAZELLE", new BigDecimal(200), 10, Brand.ADIDAS, Size.A);
         productFacade.add(adidasShoe);
@@ -134,6 +134,6 @@ public class BagTest {
         Item withdrawnFromSaleProduct = new Item(adidasShoe.getId(), 1);
 
         //when
-        bagFacade.addItem(BAG_ID, withdrawnFromSaleProduct);
+        cartFacade.addItem(CART_ID, withdrawnFromSaleProduct);
     }
 }
