@@ -1,14 +1,12 @@
-package pl.workshops.shoppingcart.product;
+package pl.workshops.shoppingcart.product.domain;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pl.workshops.shoppingcart.product.domain.ProductConfiguration;
-import pl.workshops.shoppingcart.product.domain.ProductFacade;
 import pl.workshops.shoppingcart.product.dto.ProductDto;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static pl.workshops.shoppingcart.product.SampleProducts.ADIDAS_SHOE_TO_ADD;
+import static pl.workshops.shoppingcart.product.domain.SampleProducts.ADIDAS_SHOE_TO_ADD;
 
 class ProductTest {
 

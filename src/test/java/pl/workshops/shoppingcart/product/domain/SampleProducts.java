@@ -1,4 +1,4 @@
-package pl.workshops.shoppingcart.product;
+package pl.workshops.shoppingcart.product.domain;
 
 import pl.workshops.shoppingcart.product.dto.BrandTypeDto;
 import pl.workshops.shoppingcart.product.dto.ProductDto;
