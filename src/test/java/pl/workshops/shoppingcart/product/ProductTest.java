@@ -1,57 +1,57 @@
 package pl.workshops.shoppingcart.product;
 
-import org.junit.Test;
-import pl.workshops.shoppingcart.Configuration;
-import pl.workshops.shoppingcart.product.shoe.Brand;
-import pl.workshops.shoppingcart.product.shoe.Shoe;
-import pl.workshops.shoppingcart.product.shoe.Size;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import pl.workshops.shoppingcart.product.domain.ProductConfiguration;
+import pl.workshops.shoppingcart.product.domain.ProductFacade;
+import pl.workshops.shoppingcart.product.dto.ProductDto;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static pl.workshops.shoppingcart.product.SampleProducts.ADIDAS_SHOE_TO_ADD;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+class ProductTest {
 
-public class ProductTest {
+    private ProductFacade productFacade;
 
-    ProductFacade productFacade = new Configuration().productFacade();
-
-    @Test
-    public void shouldAddNewProduct() {
-        //given
-        Product adidasShoe = new Shoe("ADIDAS GAZELLE", new BigDecimal(399), 10, Brand.ADIDAS, Size.A);
-
-        //when
-        productFacade.add(adidasShoe);
-
-        //then
-        assertEquals(adidasShoe, productFacade.show(adidasShoe.getId()));
+    @BeforeEach
+    void setup() {
+        productFacade = new ProductConfiguration().productFacade();
     }
 
     @Test
-    public void shouldDeleteExistingProduct() {
+    void shouldAddNewProduct() {
         //given
-        Product adidasShoe = new Shoe("ADIDAS GAZELLE", new BigDecimal(399), 10, Brand.ADIDAS, Size.A);
-        productFacade.add(adidasShoe);
+        ProductDto adidasShoe = ADIDAS_SHOE_TO_ADD;
 
         //when
-        productFacade.delete(adidasShoe.getId());
+        ProductDto created = productFacade.create(adidasShoe);
+
+        //then
+        assertEquals(created.getId(), productFacade.show(created.getId()).getId());
+    }
+
+    @Test
+    void shouldDeleteExistingProduct() {
+        //given
+        ProductDto created = productFacade.create(ADIDAS_SHOE_TO_ADD);
+
+        //when
+        productFacade.delete(created.getId());
 
         //then
         assertEquals(0, productFacade.findAll().size());
     }
 
     @Test
-    public void shouldWithdrawProductFromSale() {
+    void shouldWithdrawProductFromSale() {
         //given
-        Product adidasShoe = new Shoe("ADIDAS GAZELLE", new BigDecimal(399), 10, Brand.ADIDAS, Size.A);
-        productFacade.add(adidasShoe);
+        ProductDto created = productFacade.create(ADIDAS_SHOE_TO_ADD);
 
         //when
-        productFacade.withdrawFromSale(adidasShoe.getId());
+        productFacade.withdrawFromSale(created.getId());
 
         //then
-        assertTrue(adidasShoe.isNotAvailable());
+        assertFalse(ADIDAS_SHOE_TO_ADD.isCanBeOrder());
     }
 }

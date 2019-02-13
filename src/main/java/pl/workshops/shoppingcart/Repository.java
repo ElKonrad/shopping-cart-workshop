@@ -15,4 +15,11 @@ public interface Repository<T, ID> {
         }
         return object;
     }
+
+    class ObjectNotFoundException extends RuntimeException {
+
+        ObjectNotFoundException(String message) {
+            super(message);
+        }
+    }
 }

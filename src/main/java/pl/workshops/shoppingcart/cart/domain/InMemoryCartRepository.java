@@ -1,11 +1,11 @@
-package pl.workshops.shoppingcart.cart;
+package pl.workshops.shoppingcart.cart.domain;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class InMemoryCartRepository implements CartRepository {
+class InMemoryCartRepository implements CartRepository {
 
     private Map<String, Cart> map = new HashMap<>();
 
@@ -28,6 +28,6 @@ public class InMemoryCartRepository implements CartRepository {
 
     @Override
     public List<Item> findAllItemsById(String cartId) {
-        return map.get(cartId).getProducts();
+        return map.get(cartId).getItems();
     }
 }

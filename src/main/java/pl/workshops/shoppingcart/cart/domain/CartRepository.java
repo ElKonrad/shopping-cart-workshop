@@ -1,10 +1,10 @@
-package pl.workshops.shoppingcart.cart;
+package pl.workshops.shoppingcart.cart.domain;
 
 import pl.workshops.shoppingcart.Repository;
 
 import java.util.List;
 
-public interface CartRepository extends Repository<Cart, String> {
+interface CartRepository extends Repository<Cart, String> {
 
     List<Item> findAllItemsById(String cartId);
 }

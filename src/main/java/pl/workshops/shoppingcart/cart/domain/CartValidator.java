@@ -1,4 +1,4 @@
-package pl.workshops.shoppingcart.cart;
+package pl.workshops.shoppingcart.cart.domain;
 
 import java.util.UUID;
 
