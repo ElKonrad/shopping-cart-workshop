@@ -1,5 +1,6 @@
 package pl.workshops.shoppingcart.product.domain;
 
+import lombok.Builder;
 import pl.workshops.shoppingcart.product.dto.ProductDto;
 
 import java.math.BigDecimal;
@@ -10,7 +11,8 @@ class Shoe extends Product {
     private Brand brand;
     private Size size;
 
-    public Shoe(String title,
+    @Builder
+    Shoe(String title,
                 BigDecimal unitPrice,
                 int quantity,
                 Brand brand,

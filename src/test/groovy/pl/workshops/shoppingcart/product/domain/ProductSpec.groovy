@@ -1,13 +1,11 @@
 package pl.workshops.shoppingcart.product.domain
 
-
 import pl.workshops.shoppingcart.product.dto.ProductDto
 import spock.lang.Specification
 
-import static org.junit.jupiter.api.Assertions.assertEquals
-import static pl.workshops.shoppingcart.product.domain.SampleProducts.ADIDAS_SHOE_TO_ADD
+import java.lang.Void as Should
 
-class ProductSpec extends Specification {
+class ProductSpec extends Specification implements ExampleProducts {
 
     private ProductFacade productFacade
 
@@ -15,14 +13,40 @@ class ProductSpec extends Specification {
         productFacade = new ProductConfiguration().productFacade()
     }
 
-    def "should add new product"() {
+    def "should get a product"() {
+        when: "we create a product"
+            ProductDto created = productFacade.create(ADIDAS_SHOE_TO_ADD)
+
+        then: "system has this product"
+            with(productFacade.show(created.id)) {
+                id == created.id
+                title == created.title
+                unitPrice == created.unitPrice
+                quantity == created.quantity
+                brand == created.brand
+                size == created.size
+            }
+    }
+
+    Should "delete existing product"() {
         given:
-            ProductDto adidasShoe = ADIDAS_SHOE_TO_ADD
+            ProductDto created = productFacade.create(ADIDAS_SHOE_TO_ADD)
 
         when:
-            ProductDto created = productFacade.create(adidasShoe)
+            productFacade.delete(created.id)
 
         then:
-            assertEquals(created.getId(), productFacade.show(created.getId()).getId())
+            productFacade.findAll().size() == 0
+    }
+
+    Should "withdraw product from sale"() {
+        given:
+            ProductDto created = productFacade.create(ADIDAS_SHOE_TO_ADD)
+
+        when:
+            productFacade.withdrawFromSale(created.id)
+
+        then:
+            ADIDAS_SHOE_TO_ADD.isCanBeOrder() == false
     }
 }

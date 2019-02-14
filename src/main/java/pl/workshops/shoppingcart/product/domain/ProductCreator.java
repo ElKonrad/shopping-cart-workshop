@@ -8,11 +8,13 @@ class ProductCreator {
 
     Product from(ProductDto productDto) {
         if (nonNull(productDto.getBrand()) || nonNull(productDto.getSize()))
-            return new Shoe(productDto.getTitle(),
-                            productDto.getUnitPrice(),
-                            productDto.getQuantity(),
-                            Brand.valueOf(productDto.getBrand().name()),
-                            Size.valueOf(productDto.getSize().name()));
+            return Shoe.builder()
+                       .title(productDto.getTitle())
+                       .unitPrice(productDto.getUnitPrice())
+                       .quantity(productDto.getQuantity())
+                       .brand(Brand.valueOf(productDto.getBrand().name()))
+                       .size(Size.valueOf(productDto.getSize().name()))
+                       .build();
 
         return new Product(productDto.getTitle(), productDto.getUnitPrice(), productDto.getQuantity());
     }
