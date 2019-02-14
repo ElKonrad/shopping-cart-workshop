@@ -1,12 +1,10 @@
-package pl.workshops.shoppingcart.cart;
+package pl.workshops.shoppingcart.cart.domain;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pl.workshops.shoppingcart.cart.domain.CartConfiguration;
-import pl.workshops.shoppingcart.cart.domain.CartFacade;
 import pl.workshops.shoppingcart.cart.dto.CartDto;
 import pl.workshops.shoppingcart.cart.dto.ItemDto;
-import pl.workshops.shoppingcart.product.SampleProducts;
+import pl.workshops.shoppingcart.product.domain.SampleProducts;
 import pl.workshops.shoppingcart.product.domain.ProductConfiguration;
 import pl.workshops.shoppingcart.product.domain.ProductFacade;
 import pl.workshops.shoppingcart.product.dto.ProductDto;
@@ -16,9 +14,9 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static pl.workshops.shoppingcart.product.SampleProducts.ADIDAS_SHOE_TO_ADD;
-import static pl.workshops.shoppingcart.product.SampleProducts.NIKE_SHOE_TO_ADD;
-import static pl.workshops.shoppingcart.product.SampleProducts.productWithQuantity;
+import static pl.workshops.shoppingcart.product.domain.SampleProducts.ADIDAS_SHOE_TO_ADD;
+import static pl.workshops.shoppingcart.product.domain.SampleProducts.NIKE_SHOE_TO_ADD;
+import static pl.workshops.shoppingcart.product.domain.SampleProducts.productWithQuantity;
 
 class CartTest {
 
