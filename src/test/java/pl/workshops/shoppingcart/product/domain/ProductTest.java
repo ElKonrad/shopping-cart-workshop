@@ -19,11 +19,8 @@ class ProductTest {
 
     @Test
     void shouldAddNewProduct() {
-        //given
-        ProductDto adidasShoe = ADIDAS_SHOE_TO_ADD;
-
         //when
-        ProductDto created = productFacade.create(adidasShoe);
+        ProductDto created = productFacade.create(ADIDAS_SHOE_TO_ADD);
 
         //then
         assertEquals(created.getId(), productFacade.show(created.getId()).getId());
@@ -38,7 +35,7 @@ class ProductTest {
         productFacade.delete(created.getId());
 
         //then
-        assertEquals(0, productFacade.findAll().size());
+        assertEquals(0, productFacade.showAll().size());
     }
 
     @Test
@@ -47,9 +44,9 @@ class ProductTest {
         ProductDto created = productFacade.create(ADIDAS_SHOE_TO_ADD);
 
         //when
-        productFacade.withdrawFromSale(created.getId());
+        ProductDto withdrawn = productFacade.withdrawFromSale(created.getId());
 
         //then
-        assertFalse(ADIDAS_SHOE_TO_ADD.isCanBeOrder());
+        assertFalse(withdrawn.isCanBeOrder());
     }
 }

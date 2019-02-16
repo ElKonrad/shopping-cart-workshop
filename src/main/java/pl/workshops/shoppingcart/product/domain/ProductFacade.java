@@ -31,15 +31,16 @@ public class ProductFacade {
         productRepository.deleteById(id);
     }
 
-    public List<ProductDto> findAll() {
+    public List<ProductDto> showAll() {
         return productRepository.findAll()
                                 .stream()
                                 .map(Product::dto)
                                 .collect(Collectors.toList());
     }
 
-    public void withdrawFromSale(String id) {
+    public ProductDto withdrawFromSale(String id) {
         Product product = productRepository.findOneOrThrow(id);
         product.withdrawFromSale();
+        return productRepository.save(product).dto();
     }
 }

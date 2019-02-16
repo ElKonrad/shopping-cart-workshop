@@ -60,7 +60,6 @@ class CartSpec extends Specification implements ExampleProducts {
             cartFacade.showAllItems(CART_ID).size() == TWO_ITEMS_IN_CART
     }
 
-
     @Unroll
     def "when item with price #firstItemTotalPrice is in cart and another item is added with price #secondItemTotalPrice then total price of cart should be #totalCost"() {
         given:
@@ -111,7 +110,6 @@ class CartSpec extends Specification implements ExampleProducts {
             totalCost << [200, 300, 400]
     }
 
-
     def "should decrease total price when some product is deleted"() {
         given:
             ProductDto created1 = productFacade.create(productWithPrice(new BigDecimal(200)))
@@ -130,7 +128,6 @@ class CartSpec extends Specification implements ExampleProducts {
             cartFacade.getTotalCost(CART_ID) == new BigDecimal(300)
     }
 
-
     def "should thrown an exception when trying add to cart too many products not available in stock"() {
         given:
             ProductDto created = productFacade.create(productWithQuantity(10))
@@ -142,7 +139,6 @@ class CartSpec extends Specification implements ExampleProducts {
         then:
             thrown(IllegalStateException.class)
     }
-
 
     def "should clear cart"() {
         given:
@@ -159,7 +155,6 @@ class CartSpec extends Specification implements ExampleProducts {
         then:
             cartFacade.showAllItems(CART_ID).size() == 0
     }
-
 
     def "should thrown an exception when trying add to cart product withdrawn from sale"() {
         given:

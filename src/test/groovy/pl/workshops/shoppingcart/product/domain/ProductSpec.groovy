@@ -36,7 +36,7 @@ class ProductSpec extends Specification implements ExampleProducts {
             productFacade.delete(created.id)
 
         then:
-            productFacade.findAll().size() == 0
+            productFacade.showAll().size() == 0
     }
 
     Should "withdraw product from sale"() {

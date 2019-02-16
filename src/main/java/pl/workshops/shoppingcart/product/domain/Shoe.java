@@ -23,7 +23,7 @@ class Shoe extends Product {
     }
 
     public String getTitle() {
-        return SHOE_PREFIX_TITLE + super.getTitle();
+        return super.getTitle();
     }
 
     @Override
