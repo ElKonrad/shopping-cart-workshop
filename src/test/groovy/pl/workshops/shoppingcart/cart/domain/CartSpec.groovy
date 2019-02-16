@@ -5,11 +5,8 @@ import pl.workshops.shoppingcart.cart.dto.ItemDto
 import pl.workshops.shoppingcart.product.domain.ExampleProducts
 import pl.workshops.shoppingcart.product.domain.ProductConfiguration
 import pl.workshops.shoppingcart.product.domain.ProductFacade
-import pl.workshops.shoppingcart.product.domain.SampleProducts
 import pl.workshops.shoppingcart.product.dto.ProductDto
 import spock.lang.Specification
-
-import static org.junit.jupiter.api.Assertions.assertEquals
 
 class CartSpec extends Specification implements ExampleProducts {
 
@@ -39,7 +36,6 @@ class CartSpec extends Specification implements ExampleProducts {
             cartFacade.showAllItems(CART_ID).size() == 1
     }
 
-
     def "should increase number of items in cart when another product is added"() {
         given:
             ProductDto createdAdidasShoe = productFacade.create(ADIDAS_SHOE_TO_ADD)
@@ -49,7 +45,7 @@ class CartSpec extends Specification implements ExampleProducts {
             cartFacade.addItem(CART_ID, new ItemDto(createdAdidasShoe.getId(), 1))
 
         then:
-            assertEquals(ONE_ITEM_IN_CART, cartFacade.showAllItems(CART_ID).size())
+            cartFacade.showAllItems(CART_ID).size() == ONE_ITEM_IN_CART
 
         when:
             cartFacade.addItem(CART_ID, new ItemDto(createdNikeShoe.getId(), 1))
@@ -61,10 +57,10 @@ class CartSpec extends Specification implements ExampleProducts {
 
     def "should increase total price when another product is added"() {
         given:
-            ProductDto created1 = productFacade.create(SampleProducts.productWithPrice(new BigDecimal(200)))
-            ProductDto created2 = productFacade.create(SampleProducts.productWithPrice(new BigDecimal(300)))
-            ItemDto item1 = new ItemDto(created1.getId(), 1)
-            ItemDto item2 = new ItemDto(created2.getId(), 1)
+            ProductDto created1 = productFacade.create(productWithPrice(new BigDecimal(firstProductPrice)))
+            ProductDto created2 = productFacade.create(productWithPrice(new BigDecimal(secondProductPrice)))
+            ItemDto item1 = new ItemDto(created1.getId(), firstProductQuantity)
+            ItemDto item2 = new ItemDto(created2.getId(), secondProductQuantity)
 
         and:
             cartFacade.addItem(CART_ID, item1)
@@ -73,14 +69,20 @@ class CartSpec extends Specification implements ExampleProducts {
             CartDto cart = cartFacade.addItem(CART_ID, item2)
 
         then:
-            cartFacade.getTotalCost(cart.getId()) == new BigDecimal(500)
+            cartFacade.getTotalCost(cart.getId()) == new BigDecimal(totalCost)
+
+        where:
+            firstProductPrice | firstProductQuantity | secondProductPrice | secondProductQuantity || totalCost
+            100               | 1                    | 100                | 1                     || 200
+            100               | 2                    | 100                | 1                     || 300
+            100               | 2                    | 100                | 2                     || 400
     }
 
 
     def "should decrease total price when some product is deleted"() {
         given:
-            ProductDto created1 = productFacade.create(SampleProducts.productWithPrice(new BigDecimal(200)))
-            ProductDto created2 = productFacade.create(SampleProducts.productWithPrice(new BigDecimal(300)))
+            ProductDto created1 = productFacade.create(productWithPrice(new BigDecimal(200)))
+            ProductDto created2 = productFacade.create(productWithPrice(new BigDecimal(300)))
             ItemDto item1 = new ItemDto(created1.getId(), 1)
             ItemDto item2 = new ItemDto(created2.getId(), 1)
 
