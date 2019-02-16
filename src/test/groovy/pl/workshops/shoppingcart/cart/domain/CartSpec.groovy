@@ -7,6 +7,7 @@ import pl.workshops.shoppingcart.product.domain.ProductConfiguration
 import pl.workshops.shoppingcart.product.domain.ProductFacade
 import pl.workshops.shoppingcart.product.dto.ProductDto
 import spock.lang.Specification
+import spock.lang.Unroll
 
 class CartSpec extends Specification implements ExampleProducts {
 
@@ -23,10 +24,10 @@ class CartSpec extends Specification implements ExampleProducts {
         cartFacade.createCart(CART_ID)
     }
 
-
+    @Unroll
     def "should not be empty cart when some product is added"() {
         given:
-            ProductDto created = productFacade.create(ADIDAS_SHOE_TO_ADD)
+            ProductDto created = productFacade.create(sampleProduct)
             ItemDto itemToAdd = new ItemDto(created.getId(), 1)
 
         when:
@@ -34,6 +35,11 @@ class CartSpec extends Specification implements ExampleProducts {
 
         then:
             cartFacade.showAllItems(CART_ID).size() == 1
+
+        where:
+            sampleProduct      | _
+            ADIDAS_SHOE_TO_ADD | _
+            NIKE_SHOE_TO_ADD   | _
     }
 
     def "should increase number of items in cart when another product is added"() {
@@ -55,7 +61,8 @@ class CartSpec extends Specification implements ExampleProducts {
     }
 
 
-    def "should increase total price when another product is added"() {
+    @Unroll
+    def "when item with price #firstItemTotalPrice is in cart and another item is added with price #secondItemTotalPrice then total price of cart should be #totalCost"() {
         given:
             ProductDto created1 = productFacade.create(productWithPrice(new BigDecimal(firstProductPrice)))
             ProductDto created2 = productFacade.create(productWithPrice(new BigDecimal(secondProductPrice)))
@@ -76,6 +83,32 @@ class CartSpec extends Specification implements ExampleProducts {
             100               | 1                    | 100                | 1                     || 200
             100               | 2                    | 100                | 1                     || 300
             100               | 2                    | 100                | 2                     || 400
+
+            firstItemTotalPrice = firstProductPrice * firstProductQuantity
+            secondItemTotalPrice = secondProductPrice * secondProductQuantity
+    }
+
+    @Unroll
+    def "should increase total price when another product is added"() {
+        given:
+            ProductDto created1 = productFacade.create(productWithPrice(new BigDecimal(firstProductPrice)))
+            ProductDto created2 = productFacade.create(productWithPrice(new BigDecimal(secondProductPrice)))
+            ItemDto item1 = new ItemDto(created1.getId(), firstProductQuantity)
+            ItemDto item2 = new ItemDto(created2.getId(), secondProductQuantity)
+
+        and:
+            cartFacade.addItem(CART_ID, item1)
+
+        when:
+            CartDto cart = cartFacade.addItem(CART_ID, item2)
+
+        then:
+            cartFacade.getTotalCost(cart.getId()) == new BigDecimal(totalCost)
+
+        where:
+            [firstProductPrice, firstProductQuantity] << [[100, 1], [100, 2], [100, 2]]
+            [secondProductPrice, secondProductQuantity] << [[100, 1], [100, 1], [100, 2]]
+            totalCost << [200, 300, 400]
     }
 
 

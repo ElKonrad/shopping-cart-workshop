@@ -33,7 +33,7 @@ class Cart {
     void add(Item item) {
         ProductDto product = item.getProduct();
         if (product.cannotBeOrder() || item.getQuantity() > product.getQuantity()) {
-            throw new IllegalStateException("Product with ID=[" + product.getId() + "] is not canBeOrder or requested quantities exceeds canBeOrder stock");
+            throw new IllegalStateException("Product with ID=[" + product.getId() + "] is not canBeOrder or requested quantities exceeds available stock");
         }
         items.add(item);
     }
