@@ -44,9 +44,9 @@ class ProductSpec extends Specification implements ExampleProducts {
             ProductDto created = productFacade.create(ADIDAS_SHOE_TO_ADD)
 
         when:
-            productFacade.withdrawFromSale(created.id)
+            ProductDto withdrawn = productFacade.withdrawFromSale(created.id)
 
         then:
-            ADIDAS_SHOE_TO_ADD.isCanBeOrder() == false
+            withdrawn.isCanBeOrder() == false
     }
 }
