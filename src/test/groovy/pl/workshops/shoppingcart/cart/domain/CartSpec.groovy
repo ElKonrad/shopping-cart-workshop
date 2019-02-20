@@ -63,8 +63,8 @@ class CartSpec extends Specification implements ExampleProducts {
     @Unroll
     def "when item with price #firstItemTotalPrice is in cart and another item is added with price #secondItemTotalPrice then total price of cart should be #totalCost"() {
         given:
-            ProductDto created1 = productFacade.create(productWithPrice(new BigDecimal(firstProductPrice)))
-            ProductDto created2 = productFacade.create(productWithPrice(new BigDecimal(secondProductPrice)))
+            ProductDto created1 = productFacade.create(shoeWithPrice(new BigDecimal(firstProductPrice)))
+            ProductDto created2 = productFacade.create(shoeWithPrice(new BigDecimal(secondProductPrice)))
             ItemDto item1 = new ItemDto(created1.getId(), firstProductQuantity)
             ItemDto item2 = new ItemDto(created2.getId(), secondProductQuantity)
 
@@ -90,8 +90,8 @@ class CartSpec extends Specification implements ExampleProducts {
     @Unroll
     def "should increase total price when another product is added"() {
         given:
-            ProductDto created1 = productFacade.create(productWithPrice(new BigDecimal(firstProductPrice)))
-            ProductDto created2 = productFacade.create(productWithPrice(new BigDecimal(secondProductPrice)))
+            ProductDto created1 = productFacade.create(shoeWithPrice(new BigDecimal(firstProductPrice)))
+            ProductDto created2 = productFacade.create(shoeWithPrice(new BigDecimal(secondProductPrice)))
             ItemDto item1 = new ItemDto(created1.getId(), firstProductQuantity)
             ItemDto item2 = new ItemDto(created2.getId(), secondProductQuantity)
 
@@ -112,8 +112,8 @@ class CartSpec extends Specification implements ExampleProducts {
 
     def "should decrease total price when some product is deleted"() {
         given:
-            ProductDto created1 = productFacade.create(productWithPrice(new BigDecimal(200)))
-            ProductDto created2 = productFacade.create(productWithPrice(new BigDecimal(300)))
+            ProductDto created1 = productFacade.create(shoeWithPrice(new BigDecimal(200)))
+            ProductDto created2 = productFacade.create(shoeWithPrice(new BigDecimal(300)))
             ItemDto item1 = new ItemDto(created1.getId(), 1)
             ItemDto item2 = new ItemDto(created2.getId(), 1)
 
@@ -130,7 +130,7 @@ class CartSpec extends Specification implements ExampleProducts {
 
     def "should thrown an exception when trying add to cart too many products not available in stock"() {
         given:
-            ProductDto created = productFacade.create(productWithQuantity(10))
+            ProductDto created = productFacade.create(shoeWithQuantity(10))
             ItemDto itemWithTooManyQuantity = new ItemDto(created.getId(), 20)
 
         when:
